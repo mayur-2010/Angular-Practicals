@@ -1,4 +1,4 @@
-// Creat an Angular App to demonstrate the two way data binding.
+// Create an Angular App to demonstrate the two way data binding.
 
 //app.ts
 import { Component } from '@angular/core';
