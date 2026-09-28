@@ -1,29 +1,47 @@
-
 # Angular Practicals
 
 ## Student Details
 
 * **Student Name:** Mayur Pawar
-* **Roll Number:** _SM1102_________
-* **Class/Division:** S.Y. M.Sc. Computer Science / __________
-* **Course/Subject Name:** Full Stack Development
+* **Roll Number:** SM1102
+* **Class/Division:** S.Y. M.Sc. Computer Science
+* **Course/Subject Name:** Angular
 
 ## Practicals Included
 
-### Practical 1 – Student Portfolio
+### Practical 01 – String Interpolation
 
-Create an Angular application to display a student portfolio.
+Create an Angular application to demonstrate **String Interpolation** and display data from the component in the HTML template.
 
-**Features:**
+### Practical 02 – Display Student Names
 
-* Student name and professional title
-* About Me section
-* Skills section
-* Projects section
+Write an Angular program to display a **list of 10 student names using an array** and the `*ngFor` directive.
+
+### Practical 03 – Time Table
+
+Create an Angular application to display a **Time Table using one-way data binding**.
+
+### Practical 04 – Student Portfolio
+
+Create an Angular application to display a **Student Portfolio** containing:
+
+* Student information
+* About Me
+* Skills
+* Projects
 * Contact information
-* Project links
-* Angular `*ngFor` directive
-* HTML and CSS styling
+
+### Practical 05 – Two-Way Data Binding
+
+Create an Angular application to demonstrate **Two-Way Data Binding** using `[(ngModel)]`.
+
+### Practical 06 – Simple Routing
+
+Create an Angular application to demonstrate **Simple Routing** between different components/pages.
+
+### Practical 07 – Route Parameters
+
+Create an Angular application for **defining route parameters and retrieving data in components**.
 
 ## Technologies Used
 
@@ -32,35 +50,39 @@ Create an Angular application to display a student portfolio.
 * HTML
 * CSS
 
-## How to Run the Project
+## Angular Concepts Covered
+
+* String Interpolation
+* Arrays
+* `*ngFor` Directive
+* One-Way Data Binding
+* Two-Way Data Binding
+* `ngModel`
+* Components
+* Routing
+* Route Parameters
+* Data Retrieval in Components
+
+## How to Run
+
+Install the required dependencies:
 
 ```bash
 npm install
+```
+
+Run the Angular application:
+
+```bash
 ng serve
 ```
 
-Then open:
+Open the application in a browser:
 
 ```text
 http://localhost:4200/
 ```
 
-## Project Structure
-
-```text
-angular-practicals/
-│
-├── src/
-│   └── app/
-│       ├── app.component.ts
-│       ├── app.component.html
-│       └── app.component.css
-│
-├── angular.json
-├── package.json
-└── README.md
-```
-
 ## Objective
 
-To develop an Angular application and understand the use of components, data binding, directives, TypeScript, HTML, and CSS.
+The objective of these practicals is to understand the basic concepts of Angular, including components, data binding, directives, arrays, routing, and route parameters, and to develop simple Angular applications using these concepts.
