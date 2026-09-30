@@ -1,0 +1,242 @@
+// Practical 02: An Angular application designed to display a simple timetable, showcasing scheduled events or tasks in an easy-to-read format using Angular components and data binding.
+// app.component.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+interface ScheduleEvent {
+  time: string;
+  subject: string;
+  teacher: string;
+  room: string;
+  type: 'Theory' | 'Lab' | 'Break';
+}
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  college = "MIT Arts, Commerce & Science College";
+  department = "Computer Science Department";
+  classTitle = "SY M.Sc. (Computer Science) - Semester III";
+  
+  days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  selectedDay: string = 'Monday';
+
+  schedule: { [key: string]: ScheduleEvent[] } = {
+    'Monday': [
+      { time: '09:00 AM - 10:00 AM', subject: 'Full Stack Development - III', teacher: 'Prof. Guide', room: 'Lab 3', type: 'Theory' },
+      { time: '10:00 AM - 11:00 AM', subject: 'Machine Learning', teacher: 'Dr. Rao', room: 'Classroom 204', type: 'Theory' },
+      { time: '11:00 AM - 11:30 AM', subject: 'Short Break / Recess', teacher: '-', room: 'Cafeteria', type: 'Break' },
+      { time: '11:30 AM - 01:30 PM', subject: 'FSD-III Practical Lab', teacher: 'Prof. Guide', room: 'Lab 2', type: 'Lab' },
+      { time: '02:00 PM - 03:00 PM', subject: 'Software Frameworks', teacher: 'Prof. Joshi', room: 'Classroom 205', type: 'Theory' }
+    ],
+    'Tuesday': [
+      { time: '09:00 AM - 10:00 AM', subject: 'Machine Learning', teacher: 'Dr. Rao', room: 'Classroom 204', type: 'Theory' },
+      { time: '10:00 AM - 11:00 AM', subject: 'Advanced Software Dev', teacher: 'Prof. Kulkarni', room: 'Lab 1', type: 'Theory' },
+      { time: '11:00 AM - 11:30 AM', subject: 'Short Break / Recess', teacher: '-', room: 'Cafeteria', type: 'Break' },
+      { time: '11:30 AM - 01:30 PM', subject: 'ML Practical Lab', teacher: 'Dr. Rao', room: 'Lab 4', type: 'Lab' },
+      { time: '02:00 PM - 03:00 PM', subject: 'Full Stack Development - III', teacher: 'Prof. Guide', room: 'Classroom 204', type: 'Theory' }
+    ],
+    'Wednesday': [
+      { time: '09:00 AM - 10:00 AM', subject: 'Software Frameworks', teacher: 'Prof. Joshi', room: 'Classroom 205', type: 'Theory' },
+      { time: '10:00 AM - 11:00 AM', subject: 'Full Stack Development - III', teacher: 'Prof. Guide', room: 'Lab 3', type: 'Theory' },
+      { time: '11:00 AM - 11:30 AM', subject: 'Short Break / Recess', teacher: '-', room: 'Cafeteria', type: 'Break' },
+      { time: '11:30 AM - 01:30 PM', subject: 'Project Lab / Mentoring', teacher: 'Faculty Panel', room: 'Project Lab', type: 'Lab' },
+      { time: '02:00 PM - 03:00 PM', subject: 'Library / Research Work', teacher: 'Librarian', room: 'Library', type: 'Theory' }
+    ],
+    'Thursday': [
+      { time: '09:00 AM - 10:00 AM', subject: 'Advanced Software Dev', teacher: 'Prof. Kulkarni', room: 'Lab 1', type: 'Theory' },
+      { time: '10:00 AM - 11:00 AM', subject: 'Machine Learning', teacher: 'Dr. Rao', room: 'Classroom 204', type: 'Theory' },
+      { time: '11:00 AM - 11:30 AM', subject: 'Short Break / Recess', teacher: '-', room: 'Cafeteria', type: 'Break' },
+      { time: '11:30 AM - 01:30 PM', subject: 'FSD-III Lab Evaluation', teacher: 'Prof. Guide', room: 'Lab 2', type: 'Lab' },
+      { time: '02:00 PM - 03:00 PM', subject: 'Technical Seminar', teacher: 'Visiting Expert', room: 'Auditorium', type: 'Theory' }
+    ],
+    'Friday': [
+      { time: '09:00 AM - 10:00 AM', subject: 'Full Stack Development - III', teacher: 'Prof. Guide', room: 'Lab 3', type: 'Theory' },
+      { time: '10:00 AM - 11:00 AM', subject: 'Software Frameworks', teacher: 'Prof. Joshi', room: 'Classroom 205', type: 'Theory' },
+      { time: '11:00 AM - 11:30 AM', subject: 'Short Break / Recess', teacher: '-', room: 'Cafeteria', type: 'Break' },
+      { time: '11:30 AM - 01:30 PM', subject: 'ML Project Presentation', teacher: 'Dr. Rao', room: 'Lab 4', type: 'Lab' },
+      { time: '02:00 PM - 03:00 PM', subject: 'Counseling & Mentoring', teacher: 'Mentor', room: 'Cabin 12', type: 'Theory' }
+    ]
+  };
+
+  selectDay(day: string): void {
+    this.selectedDay = day;
+  }
+}
+
+// app.component.html
+<div class="timetable-wrapper">
+  <header class="header">
+    <h2>{{ college }}</h2>
+    <h4>{{ department }}</h4>
+    <p class="batch">{{ classTitle }}</p>
+  </header>
+
+  <!-- Day Selection Tabs (Event Binding) -->
+  <div class="day-tabs">
+    <button
+      *ngFor="let day of days"
+      (click)="selectDay(day)"
+      [class.active]="selectedDay === day"
+      class="tab-btn">
+      {{ day }}
+    </button>
+  </div>
+
+  <!-- Timetable Table Showcase (Data Binding) -->
+  <div class="table-container">
+    <h3>Schedule for: <span>{{ selectedDay }}</span></h3>
+    <table class="timetable-table">
+      <thead>
+        <tr>
+          <th>Time Slot</th>
+          <th>Subject / Event</th>
+          <th>Instructor</th>
+          <th>Venue / Room</th>
+          <th>Session Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of schedule[selectedDay]" [class.break-row]="item.type === 'Break'">
+          <td class="time-cell">{{ item.time }}</td>
+          <td class="subject-cell"><strong>{{ item.subject }}</strong></td>
+          <td>{{ item.teacher }}</td>
+          <td>{{ item.room }}</td>
+          <td>
+            <span class="badge" [ngClass]="item.type.toLowerCase()">
+              {{ item.type }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+// app.component.css
+.timetable-wrapper {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.header {
+  text-align: center;
+  border-bottom: 2px solid #eaedf3;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  color: #1a365d;
+  margin: 0 0 6px 0;
+}
+
+.header h4 {
+  color: #4a5568;
+  margin: 0 0 6px 0;
+}
+
+.batch {
+  color: #718096;
+  font-weight: 500;
+  margin: 0;
+}
+
+.day-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  padding: 8px 18px;
+  border: 1px solid #cbd5e0;
+  background-color: #f7fafc;
+  color: #4a5568;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background-color: #edf2f7;
+}
+
+.tab-btn.active {
+  background-color: #3182ce;
+  color: white;
+  border-color: #3182ce;
+  box-shadow: 0 2px 8px rgba(49, 130, 206, 0.35);
+}
+
+.table-container h3 {
+  color: #2d3748;
+  margin-bottom: 14px;
+}
+
+.table-container h3 span {
+  color: #3182ce;
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.timetable-table th {
+  background-color: #2b6cb0;
+  color: white;
+  padding: 12px 14px;
+  font-weight: 600;
+}
+
+.timetable-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #2d3748;
+}
+
+.timetable-table tbody tr:hover {
+  background-color: #f7fafc;
+}
+
+.break-row {
+  background-color: #fffaf0 !important;
+  font-style: italic;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.badge.theory {
+  background-color: #e2e8f0;
+  color: #2d3748;
+}
+
+.badge.lab {
+  background-color: #c6f6d5;
+  color: #22543d;
+}
+
+.badge.break {
+  background-color: #feebc8;
+  color: #744210;
+}

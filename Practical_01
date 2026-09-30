@@ -1,0 +1,65 @@
+// Practical 01: A simple 'Hello World' application built using the Angular framework.
+
+// app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'Hello World Angular Application';
+  message = 'Welcome to Full Stack Development - III (Angular & React)';
+}
+
+// app.component.html
+<div class="hello-container">
+  <div class="card">
+    <h1 class="title">{{ title }}</h1>
+    <p class="subtitle">{{ message }}</p>
+    <div class="badge">🚀 Powered by Angular</div>
+  </div>
+</div>
+
+// app.component.css
+.hello-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+}
+
+.title {
+  color: #dd0031;
+  margin-bottom: 12px;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #c3002f;
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,35 @@
+//Write an Angular program to display a list of 10 student names using an array.
+
+//app.component.ts
+
+import { Component } from '@angular/core';
+
+import { CommonModule } from '@angular/common'; 
+
+@Component({
+  selector: 'app-student-list',
+  templateUrl: './student-list.component.html'
+})
+export class StudentListComponent {
+  studentNames: string[] = [
+    'Aniket',
+    'Sneha',
+    'Dhiraj',
+    'Pooja',
+    'Ravi',
+    'Neha',
+    'Suresh',
+    'Mayur',
+    'Anjali',
+    'Vijay'
+  ];
+}
+
+//app.component.html
+
+<h2>List of Students</h2>
+<ul>
+  <li *ngFor="let name of studentNames">
+    {{ name }}
+  </li>
+</ul>

@@ -1,0 +1,25 @@
+// Create an Angular App to demonstrate the two way data binding.
+
+//app.ts
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import {FormsModule}  from '@angular/forms'; 
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, FormsModule, CommonModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+  title = 'Twowaydatabinding';
+  name:string = '';
+  surname = 'pawar';
+}
+
+//app.component.html
+<h2>Two way Data Binding Example</h2>
+<input type="text" [(ngModel)]="name" placeholder="Enter Your Name" />
+<h3>Hello, {{name}} {{surname}}</h3>
