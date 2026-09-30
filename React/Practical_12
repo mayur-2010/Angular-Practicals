@@ -1,0 +1,368 @@
+// Practical 12: To-Do List – Add, edit, mark complete, and delete tasks using React
+
+// App.jsx
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [tasks, setTasks] = useState([
+    { id: 1, text: 'Learn Angular Component Lifecycle', completed: true },
+    { id: 2, text: 'Build React To-Do Application', completed: false },
+    { id: 3, text: 'Prepare for FSD-III Practical Exam', completed: false }
+  ]);
+  const [inputText, setInputText] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState('');
+
+  // Add new task
+  const addTask = (e) => {
+    e.preventDefault();
+    if (!inputText.trim()) return;
+    const newTask = {
+      id: Date.now(),
+      text: inputText.trim(),
+      completed: false
+    };
+    setTasks([...tasks, newTask]);
+    setInputText('');
+  };
+
+  // Toggle complete
+  const toggleComplete = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, completed: !task.completed } : task
+      )
+    );
+  };
+
+  // Start editing
+  const startEditing = (task) => {
+    setEditingId(task.id);
+    setEditText(task.text);
+  };
+
+  // Save edit
+  const saveEdit = (id) => {
+    if (!editText.trim()) return;
+    setTasks(
+      tasks.map((task) =>
+        task.id === id ? { ...task, text: editText.trim() } : task
+      )
+    );
+    setEditingId(null);
+    setEditText('');
+  };
+
+  // Cancel edit
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditText('');
+  };
+
+  // Delete task
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
+  const completedCount = tasks.filter((t) => t.completed).length;
+
+  return (
+    <div className="todo-app">
+      <div className="todo-card">
+        <header className="todo-header">
+          <h2>Task Manager / To-Do List</h2>
+          <p className="summary">
+            {completedCount} of {tasks.length} tasks completed
+          </p>
+        </header>
+
+        {/* Add Task Form */}
+        <form onSubmit={addTask} className="add-task-form">
+          <input
+            type="text"
+            placeholder="Add a new task..."
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+          <button type="submit" className="add-btn">
+            + Add
+          </button>
+        </form>
+
+        {/* Tasks List */}
+        <ul className="task-list">
+          {tasks.length === 0 ? (
+            <li className="empty-state">No tasks available. Add one above!</li>
+          ) : (
+            tasks.map((task) => (
+              <li
+                key={task.id}
+                className={`task-item ${task.completed ? 'completed' : ''}`}
+              >
+                {editingId === task.id ? (
+                  <div className="edit-box">
+                    <input
+                      type="text"
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                      autoFocus
+                    />
+                    <div className="edit-actions">
+                      <button
+                        onClick={() => saveEdit(task.id)}
+                        className="save-btn"
+                      >
+                        ✓
+                      </button>
+                      <button onClick={cancelEdit} className="cancel-btn">
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="task-content">
+                      <input
+                        type="checkbox"
+                        checked={task.completed}
+                        onChange={() => toggleComplete(task.id)}
+                        id={`task-${task.id}`}
+                      />
+                      <label htmlFor={`task-${task.id}`}>{task.text}</label>
+                    </div>
+                    <div className="task-buttons">
+                      <button
+                        onClick={() => startEditing(task)}
+                        className="icon-btn edit"
+                        title="Edit task"
+                      >
+                        ✎
+                      </button>
+                      <button
+                        onClick={() => deleteTask(task.id)}
+                        className="icon-btn delete"
+                        title="Delete task"
+                      >
+                        🗑
+                      </button>
+                    </div>
+                  </>
+                )}
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+// App.css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todo-app {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.todo-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 520px;
+  padding: 28px;
+}
+
+.todo-header h2 {
+  color: #1e293b;
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.summary {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.add-task-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.add-task-form input {
+  flex: 1;
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.add-task-form input:focus {
+  border-color: #3b82f6;
+}
+
+.add-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-btn:hover {
+  background-color: #2563eb;
+}
+
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #94a3b8;
+  padding: 24px 0;
+  font-style: italic;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.task-item:hover {
+  border-color: #cbd5e1;
+}
+
+.task-item.completed {
+  background-color: #f1f5f9;
+  opacity: 0.75;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.task-content input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.task-content label {
+  color: #334155;
+  font-size: 0.98rem;
+  cursor: pointer;
+  word-break: break-word;
+}
+
+.task-item.completed label {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.icon-btn.edit {
+  color: #3b82f6;
+}
+
+.icon-btn.edit:hover {
+  background-color: #eff6ff;
+}
+
+.icon-btn.delete {
+  color: #ef4444;
+}
+
+.icon-btn.delete:hover {
+  background-color: #fef2f2;
+}
+
+.edit-box {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+}
+
+.edit-box input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #3b82f6;
+  border-radius: 6px;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.save-btn, .cancel-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.save-btn {
+  background-color: #22c55e;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #94a3b8;
+  color: white;
+}

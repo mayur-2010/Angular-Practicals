@@ -1,0 +1,235 @@
+// Practical 13: Calculator – Basic arithmetic operations using React
+
+// App.jsx
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [input, setInput] = useState('0');
+  const [prevOperation, setPrevOperation] = useState('');
+
+  const handleNumber = (value) => {
+    if (input === '0' || input === 'Error') {
+      setInput(value);
+    } else {
+      setInput(input + value);
+    }
+  };
+
+  const handleOperator = (op) => {
+    if (input === 'Error') return;
+    const lastChar = input.slice(-1);
+    if (['+', '-', '*', '/', '%'].includes(lastChar)) {
+      setInput(input.slice(0, -1) + op);
+    } else {
+      setInput(input + op);
+    }
+  };
+
+  const handleDecimal = () => {
+    if (input === 'Error') return;
+    const parts = input.split(/[\+\-\*\/%]/);
+    const lastPart = parts[parts.length - 1];
+    if (!lastPart.includes('.')) {
+      setInput(input + '.');
+    }
+  };
+
+  const handleClear = () => {
+    setInput('0');
+    setPrevOperation('');
+  };
+
+  const handleDelete = () => {
+    if (input === 'Error' || input.length === 1) {
+      setInput('0');
+    } else {
+      setInput(input.slice(0, -1));
+    }
+  };
+
+  const handleCalculate = () => {
+    try {
+      // Evaluate basic arithmetic expression safely
+      // Replace % with /100 for percentage calculation if needed
+      const sanitized = input.replace(/%/g, '/100');
+      // eslint-disable-next-line no-eval
+      const result = Function(`'use strict'; return (${sanitized})`)();
+      
+      if (!isFinite(result) || isNaN(result)) {
+        setInput('Error');
+      } else {
+        // Round floating point precision issues
+        const formatted = Math.round(result * 100000000) / 100000000;
+        setPrevOperation(`${input} =`);
+        setInput(formatted.toString());
+      }
+    } catch {
+      setInput('Error');
+    }
+  };
+
+  return (
+    <div className="calculator-container">
+      <div className="calculator">
+        <div className="display">
+          <div className="prev-operation">{prevOperation}</div>
+          <div className="current-input">{input}</div>
+        </div>
+
+        <div className="keypad">
+          <button className="btn func" onClick={handleClear}>AC</button>
+          <button className="btn func" onClick={handleDelete}>DEL</button>
+          <button className="btn func" onClick={() => handleOperator('%')}>%</button>
+          <button className="btn op" onClick={() => handleOperator('/')}>÷</button>
+
+          <button className="btn num" onClick={() => handleNumber('7')}>7</button>
+          <button className="btn num" onClick={() => handleNumber('8')}>8</button>
+          <button className="btn num" onClick={() => handleNumber('9')}>9</button>
+          <button className="btn op" onClick={() => handleOperator('*')}>×</button>
+
+          <button className="btn num" onClick={() => handleNumber('4')}>4</button>
+          <button className="btn num" onClick={() => handleNumber('5')}>5</button>
+          <button className="btn num" onClick={() => handleNumber('6')}>6</button>
+          <button className="btn op" onClick={() => handleOperator('-')}>−</button>
+
+          <button className="btn num" onClick={() => handleNumber('1')}>1</button>
+          <button className="btn num" onClick={() => handleNumber('2')}>2</button>
+          <button className="btn num" onClick={() => handleNumber('3')}>3</button>
+          <button className="btn op" onClick={() => handleOperator('+')}>+</button>
+
+          <button className="btn num zero" onClick={() => handleNumber('0')}>0</button>
+          <button className="btn num" onClick={handleDecimal}>.</button>
+          <button className="btn equals" onClick={handleCalculate}>=</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+// App.css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #111827;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.calculator {
+  width: 100%;
+  max-width: 340px;
+  background: #1f2937;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  padding: 22px;
+  border: 1px solid #374151;
+}
+
+.display {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  text-align: right;
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid #334155;
+}
+
+.prev-operation {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  min-height: 20px;
+}
+
+.current-input {
+  font-size: 2.2rem;
+  color: #f8fafc;
+  font-weight: 600;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.btn {
+  height: 56px;
+  border-radius: 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.btn:active {
+  transform: scale(0.94);
+}
+
+.num {
+  background: #374151;
+  color: #f9fafb;
+}
+
+.num:hover {
+  background: #4b5563;
+}
+
+.func {
+  background: #475569;
+  color: #cbd5e1;
+}
+
+.func:hover {
+  background: #64748b;
+  color: #ffffff;
+}
+
+.op {
+  background: #f59e0b;
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+.op:hover {
+  background: #d97706;
+}
+
+.equals {
+  background: #10b981;
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+.equals:hover {
+  background: #059669;
+}
+
+.zero {
+  grid-column: span 2;
+}

@@ -1,0 +1,207 @@
+// Practical 11: Counter App – Increment, decrement, and reset a number using React
+
+// App.jsx
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(1);
+
+  const increment = () => setCount((prev) => prev + step);
+  const decrement = () => setCount((prev) => prev - step);
+  const reset = () => setCount(0);
+
+  // Dynamic styling based on counter value
+  const getCountColor = () => {
+    if (count > 0) return 'positive';
+    if (count < 0) return 'negative';
+    return 'zero';
+  };
+
+  return (
+    <div className="counter-container">
+      <div className="counter-card">
+        <h2>React Counter Application</h2>
+        <p className="description">Manage state with useState hook</p>
+
+        <div className={`count-display ${getCountColor()}`}>
+          {count}
+        </div>
+
+        <div className="step-selector">
+          <label htmlFor="step-input">Step Size: </label>
+          <input
+            id="step-input"
+            type="number"
+            min="1"
+            max="100"
+            value={step}
+            onChange={(e) => setStep(Math.max(1, parseInt(e.target.value) || 1))}
+          />
+        </div>
+
+        <div className="button-group">
+          <button className="btn decrement-btn" onClick={decrement}>
+            - Decrement
+          </button>
+          <button className="btn reset-btn" onClick={reset}>
+            ↺ Reset
+          </button>
+          <button className="btn increment-btn" onClick={increment}>
+            + Increment
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+// App.css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f172a;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.counter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+}
+
+.counter-card {
+  background: #1e293b;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  padding: 36px 30px;
+  text-align: center;
+  max-width: 440px;
+  width: 100%;
+  border: 1px solid #334155;
+}
+
+.counter-card h2 {
+  color: #f1f5f9;
+  font-size: 1.7rem;
+  margin-bottom: 6px;
+}
+
+.description {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+.count-display {
+  font-size: 4.5rem;
+  font-weight: 700;
+  margin: 20px 0;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  transition: all 0.25s ease;
+}
+
+.count-display.positive {
+  color: #22c55e;
+  text-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.count-display.negative {
+  color: #ef4444;
+  text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.count-display.zero {
+  color: #e2e8f0;
+}
+
+.step-selector {
+  margin: 18px 0;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+.step-selector input {
+  width: 65px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-left: 8px;
+  outline: none;
+}
+
+.step-selector input:focus {
+  border-color: #38bdf8;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.decrement-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.decrement-btn:hover {
+  background-color: #dc2626;
+}
+
+.reset-btn {
+  background-color: #64748b;
+  color: #ffffff;
+}
+
+.reset-btn:hover {
+  background-color: #475569;
+}
+
+.increment-btn {
+  background-color: #22c55e;
+  color: #ffffff;
+}
+
+.increment-btn:hover {
+  background-color: #16a34a;
+}
