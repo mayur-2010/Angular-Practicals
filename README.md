@@ -300,10 +300,7 @@ Angular-Practicals/
 │   ├── Practical-09/
 │   ├── Practical-10/
 │   ├── Practical-11/
-│   └── Practical-12/
-│
-├── assets/
-│   └── mitacsc_logo.png
+│   └── Practical-12/  
 │
 └── README.md
 ```
